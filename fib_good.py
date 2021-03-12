@@ -19,7 +19,6 @@ def fib(n):
     while a < n:
         print(a,end='')
         a,b=a,a+b
-    print(a)
     
     
     
