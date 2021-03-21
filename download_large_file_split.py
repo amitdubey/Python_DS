@@ -8,6 +8,8 @@ import statistics
 import numpy as np
 from functools import reduce
 import pandas as pd
+from random import sample
+from re import split
 
 #download SPY data from yahoo financials
 assets =['%5EGSPC']
@@ -31,32 +33,60 @@ df=list(prices_df.SPY.values)
 df = [round(num, 1) for num in df]
 #print(df.dtype)
 print(df)
+# def splitdataset(datafrm,numsplits):
+#     return ([df[i:i+numsplits] for i in range(0,datafrm.shape[0],numsplits)])
+# #save the dataframe to CSV if needed
+# #prices_df.to_csv('/Users/amitdubey/Documents/GitHub/Python_DS/spy.csv')
 
-#save the dataframe to CSV if needed
-#prices_df.to_csv('/Users/amitdubey/Documents/GitHub/Python_DS/spy.csv')
+# #split the dataframe into 4 equal files
+# df1 =pd.DataFrame(splitdataset(prices_df,4))
 
 
+    ###split file method 2
+number_of_chunks =4
 
+for i,chunk in enumerate(np.array_split(df, number_of_chunks)):
+    chunk =pd.DataFrame(chunk)
+    chunk.to_csv('chunk{}.csv'.format(i), index=False)
+# for idx, chunk in enumerate(np.array_split(df, number_of_chunks)):
+#     print(chunk)
+#     chunk.to_csv(f'/Users/amitdubey/Documents/GitHub/Python_DS/spy_{idx}.csv')
 
+##############Read multiple chunks into one dataframe and pass it for calculations******##############
+import os
+import glob
 
+path = "/Users/amitdubey/Documents/GitHub/Python_DS" 
+os.chdir(path)
+results = pd.DataFrame([])
+
+for counter, file in enumerate(glob.glob("chunk*.csv")):
+    namedf = pd.read_csv(file,skiprows=0)
+    results = results.append(namedf)
+#print(results)
+
+results.reset_index(drop=True,inplace=True)
+
+ ##################################*******Median and Average**********##################################       
+l = results
+print(l)
 LIST_RANGE = 10000000000
-NUMBERS_OF_TIMES_TO_TEST = 10000
+NUMBERS_OF_TIMES_TO_TEST = 100
 
-l = df
 
 def median1():
-    return statistics.median(l)
+    return ( statistics.median(l.values))
 
 
 def median2():
-    return np.median(l)
+    return (  np.median(l.values))
 
 
 def median3():
-    return pd.Series(l).median()
+    return pd.Series(map(float,l.values)).median()
 
 def median4():
-    data = sorted(l)
+    data = sorted(l.values)
     n = len(data)
     if n == 0:
         return None
@@ -64,42 +94,60 @@ def median4():
         return data[n // 2]
     else:
         i = n // 2
-        return (data[i - 1] + data[i]) / 2
+        return ( (data[i - 1] + data[i]) / 2)
+
+def median5():
+    quotient, remainder = divmod(len(l), 2)
+    if remainder:
+        return sorted(l.values)[quotient]
+    return ( sum(sorted(l.values)[quotient - 1:quotient + 1]) / 2)
 
 
 
-for func in [median1, median2, median3,median4]:
+for func in [median1, median2, median3,median4,median5]:
     print(f"{func.__name__} took: ",  timeit.timeit(stmt=func, number=NUMBERS_OF_TIMES_TO_TEST))
 
 
 #timing test for mean with different algos
 
 
-l = df
+
 
 def mean1():
-    return statistics.mean(l)
-
-
+    return statistics.mean(map(float,l.values))
 def mean2():
-    return sum(l) / len(l)
+    return ( sum(l.values) / len(l))
 
 
 def mean3():
-    return np.mean(l)
-
+    return (  np.mean(l.values))
 
 def mean4():
-    return np.array(l).mean()
+    return (np.array(l).mean())
 
 
 def mean5():
-    return reduce(lambda x, y: x + y / float(len(l)), l, 0)
+    return (  reduce(lambda x, y: x + y / float(len(l)), l.values, 0))
 
 def mean6():
-    return pd.Series(l).mean()
+    return ( pd.Series(l.all()).mean())
 
 
 
 for func in [mean1, mean2, mean3, mean4, mean5, mean6]:
     print(f"{func.__name__} took: ",  timeit.timeit(stmt=func, number=NUMBERS_OF_TIMES_TO_TEST))
+
+
+print('****************************************************')
+print('Mean is', mean1())
+print('Mean is', mean2())
+print('Mean is', mean3())
+print('Mean is', mean4())
+print('Mean is', mean5())
+
+print('****************************************************')
+print('Median is', median1())
+print('Median is', median2())
+print('Median is', median3())
+print('Median is', median4())
+print('Median is', median5())
