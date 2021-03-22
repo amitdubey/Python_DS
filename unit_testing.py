@@ -23,13 +23,24 @@ class TestMethods(unittest.TestCase):
 	# Returns True if the string contains 4 a. 
     def test_zero_length(self): 
         self.assertEqual(len(m1.l),505) 
-    
-    '''test case for mean value'''
      
 	# Returns True if the mean is equal to 1 for single element 1. 
-    def test_mean(self):		 
-	    self.assertEqual(m1.mean1(),3184.2657425742573) 
-
+    def test_mean(self):
+        self.assertEqual(m1.mean1(),3184.2657425742573)
+        print(m1.mean1()) 
+    
+    def test_mean(self):
+        self.assertEqual(m1.mean2(),3184.2657425742573) 
+        print(m1.mean2())
+    def test_mean(self):
+        self.assertEqual(m1.mean3(),3184.2657425742573)
+        print(m1.mean3()) 
+    def test_mean(self):
+        self.assertEqual(m1.mean4(),3184.2657425742577)
+        print(m1.mean4()) 
+    # def test_mean(self):
+    #     self.assertEqual(m1.mean5(),[3184.26574257])
+    #     print(m1.mean5) 
 	# #return True if the  
     # def test_ODD_even_element_mean(self):		 
 	#     self.assertEqual(len(m2.l)//2,0) 
@@ -37,7 +48,20 @@ class TestMethods(unittest.TestCase):
     
 	# Returns True if the string contains zero elements. 
     def test_zero_length_median(self): 
-        self.assertEqual(m2.median1(),[3115.3]) 
+        self.assertEqual(m2.median1(),[3115.3])
+        print (m2.median1())
+    def test_zero_length_median(self): 
+        self.assertEqual(m2.median2(),[3115.3])
+        print (m2.median2()) 
+    def test_zero_length_median(self): 
+        self.assertEqual(m2.median3(),[3115.3])
+        print (m2.median3()) 
+    def test_zero_length_median(self): 
+        self.assertEqual(m2.median4(),[3115.3])
+        print (m2.median4()) 
+    # def test_zero_length_median(self): 
+    #     self.assertEqual(m2.median5(),[3115.3]) 
+    #     print (m2.median5()) 
 
 	# Returns True if the mean is equal to 1 for single element 1. 
     def test_one_element_median(self):		 
