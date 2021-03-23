@@ -8,9 +8,9 @@ from functools import reduce
 
 l=pd.DataFrame(data=None)
 
-"""Return a float
+"""Returns a float
 
-    Time taken in milisecond by list range members for given iterations by a Mean or median  of a numeric array or list
+    Time taken in milisecond by median or mean functions in the mean_median_class, for  a given iterations
     """
 
 
@@ -18,9 +18,11 @@ LIST_RANGE = 10000000000
 NUMBERS_OF_TIMES_TO_TEST = 100
 
 def main():
+    #instantiating the historical data object and initializing it predefined values
     d1 = dl.downloadHistoryStockData()
     result =d1.downloadfile(dl.number_of_chunks, dl.STOCK_NAME, dl.START_DATE, dl.END_DATE, dl.INTERVAL, dl.FOLDER_LOCATION)
     
+    #instanciating the mean and median class objects and populating the input param with list of result values to calculate mean/median
     m2 =mc.Mean()
     m1 =mc.Median()
     m1.l=result

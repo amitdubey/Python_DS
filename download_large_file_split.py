@@ -11,6 +11,7 @@ from random import sample
 from re import split
 import os
 import glob
+import logging
 
 number_of_chunks =4
 START_DATE = "2019-03-19"
@@ -20,18 +21,30 @@ STOCK_NAME ='%5EGSPC'
 FOLDER_LOCATION ="/Users/amitdubey/Documents/GitHub/Python_DS"
 
 #download SPY data from yahoo financials
+"""Download the large data file from yahoo for a given period and given asset
+
+    Returns: object of list type of float numbers with 1 digit precision named as results
+        [type]: class to download SPY asset into dataframe and divide into 4 equal chunks and then read it
+    """
 class downloadHistoryStockData(object):
     def downloadfile(self,number_of_chunks,STOCK_NAME,START_DATE,END_DATE,INTERVAL,FOLDER_LOCATION) -> float:    
         assets =[STOCK_NAME]
         yahoo_financials = YahooFinancials(assets)
-        data =yahoo_financials.get_historical_price_data(START_DATE,END_DATE,INTERVAL)
+        
+ 
+        # initialize the log settings
+        logging.basicConfig(filename = FOLDER_LOCATION+'/app.log', level = logging.DEBUG,format='%(asctime)s %(levelname)s %(name)s %(message)s')
+        try:
+            data =yahoo_financials.get_historical_price_data(START_DATE,END_DATE,INTERVAL)
+        except IOError as e:
+            logging.exception(str(e))
 
-        # print(data)
+       
         #get the prices by date
         prices_df = pd.DataFrame({
             a: {x['formatted_date']: x['adjclose'] for x in data[a]['prices']} for a in assets
         })
-        #prices_df.head(10)
+        
 
         #rename the index to column correctly
         prices_df.reset_index(inplace=True)
@@ -42,18 +55,23 @@ class downloadHistoryStockData(object):
         df=list(prices_df.SPY.values)
         df = [round(num, 1) for num in df]
 
-        # Split the file into the defined no. of chunks
-        for i,chunk in enumerate(np.array_split(df, number_of_chunks)):
-            chunk =pd.DataFrame(chunk)
-            chunk.to_csv('chunk{}.csv'.format(i), index=False)
+        #Split the file into the defined no. of chunks
+        try:
+            for i,chunk in enumerate(np.array_split(df, number_of_chunks)):
+                chunk =pd.DataFrame(chunk)
+                chunk.to_csv('chunk{}.csv'.format(i), index=False)
+        except IOError as e:
+            logging.exception(str(e))
 
-
+        #read the chunks to merge them together into one large file
         os.chdir(FOLDER_LOCATION)
         results = pd.DataFrame([])
-
-        for counter, file in enumerate(glob.glob("chunk*.csv")):
-            namedf = pd.read_csv(file,skiprows=0)
-            results = results.append(namedf)
+        try:
+            for counter, file in enumerate(glob.glob("chunk*.csv")):
+                namedf = pd.read_csv(file,skiprows=0)
+                results = results.append(namedf)
+        except IOError as e:
+            logging.exception(str(e))        
         #print(results)
 
         results.reset_index(drop=True,inplace=True)
@@ -62,6 +80,7 @@ class downloadHistoryStockData(object):
 def main():
     d =downloadHistoryStockData()
     result =d.downloadfile(number_of_chunks,STOCK_NAME,START_DATE,END_DATE,INTERVAL,FOLDER_LOCATION)
+    #test code if values are coming properly or not
     print(result)
     print(type(result))
 
@@ -70,15 +89,5 @@ if __name__ == '__main__':
     main()
     
 
-#print(df.dtype)
-# def splitdataset(datafrm,numsplits):
-#     return ([df[i:i+numsplits] for i in range(0,datafrm.shape[0],numsplits)])
-# #save the dataframe to CSV if needed
-# #prices_df.to_csv('/Users/amitdubey/Documents/GitHub/Python_DS/spy.csv')
 
-# #split the dataframe into 4 equal files
-# df1 =pd.DataFrame(splitdataset(prices_df,4))
 
- # for idx, chunk in enumerate(np.array_split(df, number_of_chunks)):
-#     print(chunk)
-#     chunk.to_csv(f'/Users/amitdubey/Documents/GitHub/Python_DS/spy_{idx}.csv')

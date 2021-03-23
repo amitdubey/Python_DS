@@ -7,6 +7,11 @@ import pandas as pd
 
 l=pd.DataFrame(data=None)
 
+"""Class Median containing multiple median functions 
+
+Returns:
+    [median]: [returns the median of the float list passed from the large file object]
+"""
 class Median(object):
     def median1(self)->float:
         return ( statistics.median(self.l.values))
@@ -37,7 +42,11 @@ class Median(object):
 
 
 
+"""Class Mean containing multiple median functions 
 
+Returns:
+    [Mean]: [returns the Mean of the float list passed from the large file object]
+"""
 
 class Mean(object) :
     def mean1(self) -> float:
@@ -68,18 +77,18 @@ def main():
     m1.l =results
     m2.l=results
     print('****************************************************')
-    print('Mean is', m2.mean1())
-    print('Mean is', m2.mean2())
-    print('Mean is', m2.mean3())
-    print('Mean is', m2.mean4())
-    print('Mean is', m2.mean5())
+    print('Mean is mean 1', m2.mean1())
+    print('Mean is mean 2', m2.mean2())
+    print('Mean is mean 3', m2.mean3())
+    print('Mean is mean 4', m2.mean4())
+    print('Mean is mean 5', m2.mean5())
 
     print('****************************************************')
-    print('Median is', m1.median1())
-    print('Median is', m1.median2())
-    print('Median is', m1.median3())
-    print('Median is', m1.median4())
-    print('Median is', m1.median5())
+    print('Median is median 1', m1.median1())
+    print('Median is median 2', m1.median2())
+    print('Median is median 3', m1.median3())
+    print('Median is median 4', m1.median4())
+    print('Median is median 5', m1.median5())
 
 if __name__ == '__main__':
     main()
