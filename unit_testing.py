@@ -38,13 +38,8 @@ class TestMethods(unittest.TestCase):
     def test_mean(self):
         self.assertEqual(m1.mean4(),3184.2657425742577)
         print(m1.mean4()) 
-    # def test_mean(self):
-    #     self.assertEqual(m1.mean5(),[3184.26574257])
-    #     print(m1.mean5) 
-	# #return True if the  
-    # def test_ODD_even_element_mean(self):		 
-	#     self.assertEqual(len(m2.l)//2,0) 
-    #  #''' Test cases for median value'''
+
+    ''' Test cases for median value'''
     
 	# Returns True if the string contains zero elements. 
     def test_zero_length_median(self): 

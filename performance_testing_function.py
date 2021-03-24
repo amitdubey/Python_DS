@@ -8,14 +8,13 @@ from functools import reduce
 
 l=pd.DataFrame(data=None)
 
+LIST_RANGE = 10000000000
+NUMBERS_OF_TIMES_TO_TEST = 100
+
 """Returns a float
 
     Time taken in milisecond by median or mean functions in the mean_median_class, for  a given iterations
     """
-
-
-LIST_RANGE = 10000000000
-NUMBERS_OF_TIMES_TO_TEST = 100
 
 def main():
     #instantiating the historical data object and initializing it predefined values

@@ -82,7 +82,7 @@ def main():
     result =d.downloadfile(number_of_chunks,STOCK_NAME,START_DATE,END_DATE,INTERVAL,FOLDER_LOCATION)
     #test code if values are coming properly or not
     print(result)
-    print(type(result))
+    #print(type(result))
 
 
 if __name__ == '__main__':
