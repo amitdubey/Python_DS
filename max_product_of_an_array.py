@@ -20,7 +20,7 @@ def maxproductarr(arr:List)->None:
     return result
 
 def main():
-    arr =[6,-2,-4,0,1,3,1,7]
+    arr =[2,3,-2,4]
     print(maxproductarr(arr))
 
 if __name__ == '__main__':
